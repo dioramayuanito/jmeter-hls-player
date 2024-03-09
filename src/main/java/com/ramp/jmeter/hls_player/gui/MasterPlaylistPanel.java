@@ -20,6 +20,22 @@ class MasterPlaylistPanel extends JPanel {
     String getUrlTextField(){
         return urlTextField.getText();
     }
+    
+    private final JTextField urlEzdrmPostTextField;
+    void setUrlEzdrmPostTextField(String text){
+        urlEzdrmPostTextField.setText(text);
+    }
+    String getUrlEzdrmPostTextField(){
+        return urlEzdrmPostTextField.getText();
+    }
+    
+    private final JTextField urlLicenseTextField;
+    void setUrlLicenseTextField(String text){
+        urlLicenseTextField.setText(text);
+    }
+    String getUrlLicenseTextField(){
+        return urlLicenseTextField.getText();
+    }
 
     private final ButtonGroup durationButtons;
     private final JRadioButton customDurationRButton;
@@ -35,10 +51,18 @@ class MasterPlaylistPanel extends JPanel {
 
         // Labels
         JLabel urlTextFieldLabel = new JLabel("URL:");
+        
+        JLabel urlEzdrmPostTextFieldLabel = new JLabel("URL Post EZDRM:");
+        
+        JLabel urlLicenseTextFieldLabel = new JLabel("URL License:");
 
         // Text Fields
         customDurationTextField = new JTextField();
         urlTextField = new JTextField();
+        
+        urlEzdrmPostTextField = new JTextField();
+        urlLicenseTextField = new JTextField();
+        
 
         //Actions
         customDurationRButton.addItemListener(e -> {
@@ -58,6 +82,10 @@ class MasterPlaylistPanel extends JPanel {
         //Master Playlist Panel
         masterPlaylistPanelLayout.setHorizontalGroup(
                 masterPlaylistPanelLayout.createSequentialGroup()
+                        .addComponent(urlEzdrmPostTextFieldLabel)
+                        .addComponent(urlEzdrmPostTextField)
+                        .addComponent(urlLicenseTextFieldLabel)
+                        .addComponent(urlLicenseTextField)
                         .addComponent(urlTextFieldLabel)
                         .addComponent(urlTextField)
                         .addComponent(wholeDurationRButton)
@@ -66,6 +94,13 @@ class MasterPlaylistPanel extends JPanel {
         );
         masterPlaylistPanelLayout.setVerticalGroup(
                 masterPlaylistPanelLayout.createParallelGroup()
+                        .addComponent(urlEzdrmPostTextFieldLabel)
+                        .addComponent(urlEzdrmPostTextField,
+                                javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(urlLicenseTextFieldLabel)
+                        .addComponent(urlLicenseTextField,
+                                javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        
                         .addComponent(urlTextFieldLabel)
                         .addComponent(urlTextField,
                                 javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)

@@ -141,6 +141,9 @@ public class PlayerController extends GenericController {
     public static final String IS_CUSTOM_DURATION = "IS_CUSTOM_DURATION";
     public static final String CUSTOM_DURATION = "CUSTOM_DURATION";
 
+    public static final String LICENSE_URL = "LICENSE_URL";
+    public static final String EZDRM_POST_URL = "EZDRM_POST_URL";
+    
     private Parser parser;
 
     private RequestInfo tryGetMasterList() {
@@ -187,6 +190,14 @@ public class PlayerController extends GenericController {
 
     public String getURLData() {
         return this.getPropertyAsString(MASTER_PLAYLIST_URL);
+    }
+    
+    public String getURLEzdrmPostData() {
+        return this.getPropertyAsString(EZDRM_POST_URL);
+    }
+    
+    public String getURLLicenseData() {
+        return this.getPropertyAsString(LICENSE_URL);
     }
 
 
