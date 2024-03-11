@@ -51,7 +51,7 @@ public class PlayerControllerGui extends AbstractControllerGui {
         masterPlaylistPanel.setCustomDurationTextField(playerController.getCustomDuration());
         
         masterPlaylistPanel.setUrlEzdrmPostTextField(playerController.getURLEzdrmPostData());
-        masterPlaylistPanel.setUrlLicenseTextField(playerController.getURLLicenseData());
+        masterPlaylistPanel.setUrlCertTextField(playerController.getURLCertData());
         
         masterPlaylistPanel.repaint();
         masterPlaylistPanel.revalidate();
@@ -66,7 +66,7 @@ public class PlayerControllerGui extends AbstractControllerGui {
             testElement.setProperty(PlayerController.IS_CUSTOM_DURATION, masterPlaylistPanel.isCustomDuration());
             testElement.setProperty(PlayerController.CUSTOM_DURATION, masterPlaylistPanel.getCustomDurationTextField());
             
-            testElement.setProperty(PlayerController.LICENSE_URL, masterPlaylistPanel.getUrlLicenseTextField());
+            testElement.setProperty(PlayerController.CERT_URL, masterPlaylistPanel.getUrlCertTextField());
             testElement.setProperty(PlayerController.EZDRM_POST_URL, masterPlaylistPanel.getUrlEzdrmPostTextField());
 
         }

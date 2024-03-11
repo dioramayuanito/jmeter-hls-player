@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.0 r1840935">
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
       <stringProp name="TestPlan.comments"></stringProp>
@@ -12,26 +12,26 @@
       <stringProp name="TestPlan.user_define_classpath"></stringProp>
     </TestPlan>
     <hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group">
+        <intProp name="ThreadGroup.num_threads">20</intProp>
+        <intProp name="ThreadGroup.ramp_time">15</intProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
           <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">20</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">15</stringProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration"></stringProp>
-        <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
-        <com.ramp.jmeter.hls__player.logic.PlayerController guiclass="com.ramp.jmeter.hls_player.gui.PlayerControllerGui" testclass="com.ramp.jmeter.hls_player.logic.PlayerController" testname="HLS Player" enabled="true">
-          <stringProp name="MASTER_PLAYLIST_URL">http://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8</stringProp>
+        <com.ramp.jmeter.hls__player.logic.PlayerController guiclass="com.ramp.jmeter.hls_player.gui.PlayerControllerGui" testclass="com.ramp.jmeter.hls_player.logic.PlayerController" testname="HLS Player">
+          <stringProp name="MASTER_PLAYLIST_URL">https://ezdrm.detik.com/origin-ezdrm/mp4:ezdrm-720p/playlist.m3u8</stringProp>
           <boolProp name="IS_CUSTOM_DURATION">true</boolProp>
           <stringProp name="CUSTOM_DURATION">60</stringProp>
+          <stringProp name="CERT_URL">https://ezdrm.detik.com/sertifikat/fairplay.cer</stringProp>
+          <stringProp name="EZDRM_POST_URL">https://fps.ezdrm.com/api/keys/cd414af0-d7e6-41b3-87ca-648df9663841?U=indri@detik.com&amp;P=s3cur3R4nKuMMpK1ck </stringProp>
         </com.ramp.jmeter.hls__player.logic.PlayerController>
         <hashTree>
-          <com.ramp.jmeter.hls__player.logic.MediaPlaylistSampler guiclass="com.ramp.jmeter.hls_player.gui.MediaPlaylistSamplerGui" testclass="com.ramp.jmeter.hls_player.logic.MediaPlaylistSampler" testname="Video" enabled="true">
+          <com.ramp.jmeter.hls__player.logic.MediaPlaylistSampler guiclass="com.ramp.jmeter.hls_player.gui.MediaPlaylistSamplerGui" testclass="com.ramp.jmeter.hls_player.logic.MediaPlaylistSampler" testname="Video">
             <stringProp name="HLS.MEDIA_PLAYLIST_TYPE">Video</stringProp>
             <stringProp name="HLS.BANDWIDTH_OPTION">MAX</stringProp>
             <stringProp name="HLS.CUSTOM_BANDWIDTH"></stringProp>

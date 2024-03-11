@@ -29,12 +29,12 @@ class MasterPlaylistPanel extends JPanel {
         return urlEzdrmPostTextField.getText();
     }
     
-    private final JTextField urlLicenseTextField;
-    void setUrlLicenseTextField(String text){
-        urlLicenseTextField.setText(text);
+    private final JTextField urlCertTextField;
+    void setUrlCertTextField(String text){
+        urlCertTextField.setText(text);
     }
-    String getUrlLicenseTextField(){
-        return urlLicenseTextField.getText();
+    String getUrlCertTextField(){
+        return urlCertTextField.getText();
     }
 
     private final ButtonGroup durationButtons;
@@ -54,14 +54,14 @@ class MasterPlaylistPanel extends JPanel {
         
         JLabel urlEzdrmPostTextFieldLabel = new JLabel("URL Post EZDRM:");
         
-        JLabel urlLicenseTextFieldLabel = new JLabel("URL License:");
+        JLabel urlCertTextFieldLabel = new JLabel("URL Cert:");
 
         // Text Fields
         customDurationTextField = new JTextField();
         urlTextField = new JTextField();
         
         urlEzdrmPostTextField = new JTextField();
-        urlLicenseTextField = new JTextField();
+        urlCertTextField = new JTextField();
         
 
         //Actions
@@ -84,8 +84,8 @@ class MasterPlaylistPanel extends JPanel {
                 masterPlaylistPanelLayout.createSequentialGroup()
                         .addComponent(urlEzdrmPostTextFieldLabel)
                         .addComponent(urlEzdrmPostTextField)
-                        .addComponent(urlLicenseTextFieldLabel)
-                        .addComponent(urlLicenseTextField)
+                        .addComponent(urlCertTextFieldLabel)
+                        .addComponent(urlCertTextField)
                         .addComponent(urlTextFieldLabel)
                         .addComponent(urlTextField)
                         .addComponent(wholeDurationRButton)
@@ -97,8 +97,8 @@ class MasterPlaylistPanel extends JPanel {
                         .addComponent(urlEzdrmPostTextFieldLabel)
                         .addComponent(urlEzdrmPostTextField,
                                 javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(urlLicenseTextFieldLabel)
-                        .addComponent(urlLicenseTextField,
+                        .addComponent(urlCertTextFieldLabel)
+                        .addComponent(urlCertTextField,
                                 javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         
                         .addComponent(urlTextFieldLabel)

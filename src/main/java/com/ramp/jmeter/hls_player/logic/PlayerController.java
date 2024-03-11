@@ -1,6 +1,6 @@
 package com.ramp.jmeter.hls_player.logic;
 
-
+import java.io.ByteArrayOutputStream;
 import org.apache.jmeter.control.GenericController;
 import org.apache.jmeter.control.NextIsNullException;
 import org.apache.jmeter.samplers.SampleResult;
@@ -9,11 +9,13 @@ import org.apache.jmeter.testelement.TestElement;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
-
 
 public class PlayerController extends GenericController {
 
@@ -34,35 +36,40 @@ public class PlayerController extends GenericController {
         super();
         setName("HLS Player");
 
-
     }
-
 
     @Override
     public void initialize() {
         log.debug("initialize");
         parser = new Parser();
         RequestInfo masterResponse = tryGetMasterList();
+        
+        boolean isEzdrmPostOK = getEzdrmPost();
+        
+        if (isEzdrmPostOK) {
 
+            priorityQueue = new PriorityQueue<>(new MediaPlaylistSamplerComparator());
+            nextSamplers = new LinkedList<>();
 
-        priorityQueue = new PriorityQueue<>(new MediaPlaylistSamplerComparator());
-        nextSamplers = new LinkedList<>();
-
-        for (TestElement te : subControllersAndSamplers) {
-            if (te instanceof MediaPlaylistSampler) {
-                MediaPlaylistSampler mediaPlaylistSampler = (MediaPlaylistSampler) te;
-                mediaPlaylistSampler.setMasterPlaylist(masterResponse);
-                this.nextSamplers.add(mediaPlaylistSampler);
+            for (TestElement te : subControllersAndSamplers) {
+                if (te instanceof MediaPlaylistSampler) {
+                    MediaPlaylistSampler mediaPlaylistSampler = (MediaPlaylistSampler) te;
+                    mediaPlaylistSampler.setMasterPlaylist(masterResponse);
+                    this.nextSamplers.add(mediaPlaylistSampler);
+                }
             }
-        }
-        startTime = -1;
+            startTime = -1;
 
-        if (this.getPropertyAsBoolean(IS_CUSTOM_DURATION)) {
-            duration = this.getPropertyAsLong(CUSTOM_DURATION);
+            if (this.getPropertyAsBoolean(IS_CUSTOM_DURATION)) {
+                duration = this.getPropertyAsLong(CUSTOM_DURATION);
+            } else {
+                duration = -1;
+            }
+            super.initialize();
+
         } else {
-            duration = -1;
+            log.error("EZDRM Post is ERROR");
         }
-        super.initialize();
     }
 
     protected TestElement getCurrentElement() throws NextIsNullException {
@@ -83,8 +90,7 @@ public class PlayerController extends GenericController {
         long now = System.currentTimeMillis();
         while (priorityQueue.size() > 0
                 && (priorityQueue.comparator().compare(lastSampler, priorityQueue.peek()) == 0
-                || priorityQueue.peek().getNextCallTimeMillis() < now)
-        ) {
+                || priorityQueue.peek().getNextCallTimeMillis() < now)) {
             nextSamplers.add(priorityQueue.remove());
         }
         if (lastSampler.getNextCallTimeMillis() > now) {
@@ -122,10 +128,12 @@ public class PlayerController extends GenericController {
             priorityQueue.add(lastSampler);
         } else {
             log.debug("lastSampler: %s, nextCallTimeMillis: %s",
-                    lastSampler, lastSampler == null? "-":lastSampler.getNextCallTimeMillis());
+                    lastSampler, lastSampler == null ? "-" : lastSampler.getNextCallTimeMillis());
         }
         Sampler returnValue = super.next();
-        if (returnValue == null && !isDone()) log.error("sampler was null");
+        if (returnValue == null && !isDone()) {
+            log.error("sampler was null");
+        }
         return returnValue;
     }
 
@@ -136,28 +144,101 @@ public class PlayerController extends GenericController {
     }
 
     //---------------------------Master Playlist Getting-----------------------------------//
-
     public static final String MASTER_PLAYLIST_URL = "MASTER_PLAYLIST_URL";
     public static final String IS_CUSTOM_DURATION = "IS_CUSTOM_DURATION";
     public static final String CUSTOM_DURATION = "CUSTOM_DURATION";
 
-    public static final String LICENSE_URL = "LICENSE_URL";
+    public static final String CERT_URL = "CERT_URL";
     public static final String EZDRM_POST_URL = "EZDRM_POST_URL";
-    
+
     private Parser parser;
 
     private RequestInfo tryGetMasterList() {
-        try {
-            SampleResult masterResult = new SampleResult();
-            return getMasterList(masterResult, parser);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        boolean isCertOK = getCert();
+        if (isCertOK) {
+            try {
+                SampleResult masterResult = new SampleResult();
+                return getMasterList(masterResult, parser);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return null;
+            }            
+        } else {
+            log.error("Certification EZDRM is ERROR");
             return null;
         }
     }
 
-    private RequestInfo getMasterList(SampleResult masterResult, Parser parser) throws IOException {
+    private byte[] readBytesFromStream(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        int nRead;
+        byte[] data = new byte[1024];
 
+        while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+            buffer.write(data, 0, nRead);
+        }
+
+        buffer.flush();
+        return buffer.toByteArray();
+    }
+
+    private boolean getEzdrmPost() {
+        String fileUrl = this.getURLEzdrmPostData(); // Replace with your actual file URL
+        boolean result = false;
+        try {
+            URL url = new URL(fileUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");            
+            connection.setDoOutput(true);
+            connection.setRequestProperty("Content-Type", "application/octet-stream");
+
+            // Read binary data from the file
+            byte[] binaryData = new byte[0];
+
+            // Write binary data to the output stream
+            try (OutputStream os = connection.getOutputStream()) {
+                os.write(binaryData);
+            }
+
+            // Handle the response (e.g., read response code, etc.)
+            int responseCode = connection.getResponseCode();
+            log.info("Post EZDRM is" + String.valueOf(responseCode));
+
+            // Close the connection
+            connection.disconnect();
+            result = true;
+        } catch (IOException e) {
+            result = false;
+        }
+        return result;
+    }
+
+    private boolean getCert() {
+        String fileUrl = getURLCertData(); // Replace with your actual file URL
+        boolean result = false;
+        try {
+            URL url = new URL(fileUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+            // Set up connection properties (e.g., timeouts, request method, etc.)
+
+            // Read the file content into a byte array
+            byte[] byteArray = readBytesFromStream(connection.getInputStream());
+
+            // Now you have the file content in the byteArray
+            // You can process it further as needed
+
+            // Close the connection
+            connection.disconnect();
+            log.info("Certification EZDRM is OK");
+            result = true;
+        } catch (IOException e) {
+            result = false;
+        }
+        return result;
+    }
+
+    private RequestInfo getMasterList(SampleResult masterResult, Parser parser) throws IOException {
         masterResult.sampleStart();
         RequestInfo response = parser.getBaseUrl(new URL(getURLData()), masterResult, true);
         masterResult.sampleEnd();
@@ -191,15 +272,14 @@ public class PlayerController extends GenericController {
     public String getURLData() {
         return this.getPropertyAsString(MASTER_PLAYLIST_URL);
     }
-    
+
     public String getURLEzdrmPostData() {
         return this.getPropertyAsString(EZDRM_POST_URL);
     }
-    
-    public String getURLLicenseData() {
-        return this.getPropertyAsString(LICENSE_URL);
-    }
 
+    public String getURLCertData() {
+        return this.getPropertyAsString(CERT_URL);
+    }
 
     public boolean isCustomDuration() {
         return this.getPropertyAsBoolean(IS_CUSTOM_DURATION);
