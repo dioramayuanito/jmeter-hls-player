@@ -46,9 +46,9 @@ public class PlayerController extends GenericController {
     public void initialize() {
         log.debug("initialize");
         parser = new Parser();
-        RequestInfo masterResponse = tryGetMasterList();
+        RequestInfo masterResponse = tryGetMasterList(); // AMBIL PLAYLIST.M3U8 DULU
         
-        boolean isEzdrmPostOK = getEzdrmPost();
+        boolean isEzdrmPostOK = getEzdrmPost(); // KIRIM EZDRM POST MESSAGE DI SINI
         
         if (isEzdrmPostOK) {
 
@@ -158,7 +158,7 @@ public class PlayerController extends GenericController {
     private Parser parser;
 
     private RequestInfo tryGetMasterList() {
-        boolean isCertOK = getCert();
+        boolean isCertOK = getCert(); // AMBIL CERTIFICATE EZDRM DI SINI
         if (isCertOK) {
             try {
                 SampleResult masterResult = new SampleResult();
