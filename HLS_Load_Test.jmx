@@ -13,8 +13,8 @@
     </TestPlan>
     <hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group">
-        <intProp name="ThreadGroup.num_threads">3</intProp>
-        <intProp name="ThreadGroup.ramp_time">15</intProp>
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <intProp name="ThreadGroup.ramp_time">20</intProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
@@ -24,14 +24,14 @@
       </ThreadGroup>
       <hashTree>
         <com.ramp.jmeter.hls__player.logic.PlayerController guiclass="com.ramp.jmeter.hls_player.gui.PlayerControllerGui" testclass="com.ramp.jmeter.hls_player.logic.PlayerController" testname="HLS Player">
-          <stringProp name="MASTER_PLAYLIST_URL">https://ezdrm.detik.com/origin-ezdrm/mp4:ezdrm-720p/playlist.m3u8</stringProp>
+          <stringProp name="MASTER_PLAYLIST_URL">https://live.detiknetwork.com/detik-drm/smil:detik-drm.smil/playlist.m3u8</stringProp>
           <boolProp name="IS_CUSTOM_DURATION">true</boolProp>
           <stringProp name="CUSTOM_DURATION">60</stringProp>
-          <stringProp name="CERT_URL">https://ezdrm.detik.com/sertifikat/fairplay.cer</stringProp>
+          <stringProp name="CERT_URL">https://live.detiknetwork.com/cert/fairplay.cer</stringProp>
           <stringProp name="EZDRM_POST_URL">https://fps.ezdrm.com/api/licenses/cd414af0-d7e6-41b3-87ca-648df9663841</stringProp>
         </com.ramp.jmeter.hls__player.logic.PlayerController>
         <hashTree>
-          <com.ramp.jmeter.hls__player.logic.MediaPlaylistSampler guiclass="com.ramp.jmeter.hls_player.gui.MediaPlaylistSamplerGui" testclass="com.ramp.jmeter.hls_player.logic.MediaPlaylistSampler" testname="Video">
+          <com.ramp.jmeter.hls__player.logic.MediaPlaylistSampler guiclass="com.ramp.jmeter.hls_player.gui.MediaPlaylistSamplerGui" testclass="com.ramp.jmeter.hls_player.logic.MediaPlaylistSampler" testname="Video" enabled="true">
             <stringProp name="HLS.MEDIA_PLAYLIST_TYPE">Video</stringProp>
             <stringProp name="HLS.BANDWIDTH_OPTION">MAX</stringProp>
             <stringProp name="HLS.CUSTOM_BANDWIDTH"></stringProp>
@@ -51,7 +51,7 @@
             <stringProp name="HLS.MEDIA_PLAYLIST_TYPE">Closed Captions</stringProp>
           </com.ramp.jmeter.hls__player.logic.MediaPlaylistSampler>
           <hashTree/>
-          <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree">
+          <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
             <boolProp name="ResultCollector.error_logging">false</boolProp>
             <objProp>
               <name>saveConfig</name>
@@ -87,7 +87,7 @@
             <stringProp name="filename"></stringProp>
           </ResultCollector>
           <hashTree/>
-          <ResultCollector guiclass="GraphVisualizer" testclass="ResultCollector" testname="Graph Results">
+          <ResultCollector guiclass="GraphVisualizer" testclass="ResultCollector" testname="Graph Results" enabled="true">
             <boolProp name="ResultCollector.error_logging">false</boolProp>
             <objProp>
               <name>saveConfig</name>
@@ -123,7 +123,7 @@
             <stringProp name="filename"></stringProp>
           </ResultCollector>
           <hashTree/>
-          <ResultCollector guiclass="RespTimeGraphVisualizer" testclass="ResultCollector" testname="Response Time Graph">
+          <ResultCollector guiclass="RespTimeGraphVisualizer" testclass="ResultCollector" testname="Response Time Graph" enabled="true">
             <boolProp name="ResultCollector.error_logging">false</boolProp>
             <objProp>
               <name>saveConfig</name>
