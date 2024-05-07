@@ -207,6 +207,7 @@ public class PlayerController extends GenericController {
             // Write binary data to the output stream
             try (OutputStream os = connection.getOutputStream()) {
                 os.write(binaryData);
+                os.close();
             }
 
             // Handle the response (e.g., read response code, etc.)
